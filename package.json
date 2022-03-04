@@ -1,0 +1,23 @@
+{
+  "name": "@burency/common",
+  "version": "1.0.10",
+  "description": "",
+  "main": "./src/index.js",
+  "files": [
+    "src/**/*"
+  ],
+  "scripts": {
+    "script": "node src/index.js",
+    "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm publish"
+  },
+  "keywords": [],
+  "author": "Malik Atique",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.3",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "kafkajs": "^1.16.0"
+  }
+}
