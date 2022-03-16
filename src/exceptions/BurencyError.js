@@ -1,4 +1,4 @@
-class DatabaseConnectionError
+class BurencyError
 {
 	constructor(code, message, data) 
 	{
@@ -12,8 +12,8 @@ class DatabaseConnectionError
 	 */
 	static handle({code = 500, message = "", data = {} }) 
 	{
-		return new DatabaseConnectionError(code, message, data);
+		return new BurencyError(code, message, data);
 	}
 }
 
-module.exports = DatabaseConnectionError;
+module.exports = BurencyError;

@@ -18,7 +18,18 @@ const validate = function (req, res, next)
         const validated = schema.validate(req.body);
         if(validated["error"] !== undefined)
         {
-            return res.json( Response.validation({ data: validated.error}) );
+            var errors = [];
+            validated.error.details.forEach(detail => {
+                errors.push({
+                    path: detail.context.label,
+                    field: detail.context.key,
+                    message: detail.message,
+                    map: detail.path,
+                    type: detail.type,
+                    _original: validated.error._original
+                });
+            });
+            return res.json( Response.validation({ data: { errors } }) );
         }
     }
 

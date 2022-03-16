@@ -88,15 +88,29 @@ class Response
      * Validation error in payload
      * @returns object
      */
-    static validation(options = {})
-    {
-        return {
-            status: 422,
-            message: options.message ?? "Unprocessed entity.",
-            data: options.data ?? {},
-            accessToken: options.accessToken ?? null
-        };
-    }
+     static validation(options = {})
+     {
+         return {
+             status: 422,
+             message: options.message ?? "Unprocessed entity.",
+             data: options.data ?? {},
+             accessToken: options.accessToken ?? null
+         };
+     }
+
+     /**
+      * Custom error in payload
+      * @returns object
+      */
+     static custom(options = {})
+     {
+         return {
+             status: options.stauts ?? 400,
+             message: options.message ?? "Unprocessed entity.",
+             data: options.data ?? {},
+             accessToken: options.accessToken ?? null
+         };
+     }
 }
 
 module.exports = Response;
