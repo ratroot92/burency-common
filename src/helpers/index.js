@@ -7,5 +7,5 @@ module.exports = {
     Response,
     Validation,
     Encryption,
-    helpers,
+    ...helpers,
 }

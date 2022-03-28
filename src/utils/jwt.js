@@ -5,7 +5,7 @@ class Jwt
 	secret;
 	constructor() 
 	{
-		this.secret = process.env.TOKEN_SECRET ?? "x0t0wefw33@2314R23$@4$%!#$634";
+		this.secret = env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634");
 	}
 	static getToken(payload = {}, options = {}) 
 	{
@@ -16,7 +16,7 @@ class Jwt
 			exp: Math.floor(Date.now() / 1000) + 60 * 60,
 			validFor: options.validFor ?? false,
 		},
-		process.env.TOKEN_SECRET ?? "x0t0wefw33@2314R23$@4$%!#$634"
+		env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634")
 		);
 
 		return token;
@@ -25,7 +25,7 @@ class Jwt
 	{
 		try 
 		{
-			return jwt.verify(token, process.env.TOKEN_SECRET ?? "x0t0wefw33@2314R23$@4$%!#$634");
+			return jwt.verify(token, env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634");
 		}
 		catch (error)
 		{
