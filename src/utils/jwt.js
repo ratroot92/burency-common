@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { env } = require("@burency/common");
 
 class Jwt 
 {
@@ -25,7 +26,7 @@ class Jwt
 	{
 		try 
 		{
-			return jwt.verify(token, env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634");
+			return jwt.verify(token, env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634"));
 		}
 		catch (error)
 		{
