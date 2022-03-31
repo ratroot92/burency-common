@@ -14,6 +14,33 @@ const env = (key, defaultValue) =>
 
     return process.env[key];
 }
+const exists = async (value, options) =>
+{
+    const model = path.resolve(__dirname, "../models", options.model);
+    const Model = require(model);
+    var fieldName = options.field;
+    const modelQuery = await Model.find({[fieldName]: value});
+    if (!modelQuery.length) {
+        throw new Joi.ValidationError(
+            "ValidationError",
+            [
+                {
+                    message: `${options.model} do not exist`,
+                    path: [options.model],
+                //     type: "",
+                //     context: {
+                //         key: options.model,
+                //         label: options.model,
+                //         value,
+                //     },
+                },
+            ],
+            value
+        );
+    } 
+    return value;
+    
+}
 
 module.exports = {
     getPath,
