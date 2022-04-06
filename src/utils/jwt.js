@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { env } = require("@burency/common");
+const { env } = require("../helpers");
 
 class Jwt 
 {
