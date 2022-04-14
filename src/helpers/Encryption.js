@@ -20,6 +20,15 @@ class Encryption
     {
        return await bcrypt.compare(data, hashedData);
     }
+
+    /**
+     * 
+     * @returns object
+     */
+     static async checkHash(data = {}, hashedData)
+     {
+        return await bcrypt.compare(data, hashedData);
+     }
 }
 
 module.exports = Encryption;
