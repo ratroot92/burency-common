@@ -32,7 +32,7 @@ const validate = async function (req, res, next)
                     _original: error._original
                 });
             });
-            return res.json( Response.validation({ data: { errors } }) );
+            return res.status(422).json( Response.validation({ data: { errors } }) );
         }
     }
 

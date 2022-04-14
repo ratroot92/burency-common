@@ -8,7 +8,7 @@ const authenticated = async (req, res, next) =>
     // 1. Check if token is valid
     if(!verifiedToken)
     {
-        return res.json( Response.unauthorize({ message: "Invalid token!"}) );
+        return res.status(401).json( Response.unauthorize({ message: "Invalid token!"}) );
     }
 
     // 2. Check if token is valid for certain route
@@ -16,7 +16,7 @@ const authenticated = async (req, res, next) =>
     {
         const path = req.originalUrl.replace(/^\/|\/$/g, '');
         if(path !== verifiedToken.validFor)
-            return res.json( Response.unauthorize({ message: "Token is not valid for this route."}) );
+            return res.status(401).json( Response.unauthorize({ message: "Token is not valid for this route."}) );
     }
 
     // // 3. Check if token is not expired
