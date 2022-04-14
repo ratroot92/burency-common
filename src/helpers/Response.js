@@ -7,7 +7,7 @@ class Response {
    */
   static success(options = {}) {
     return {
-      status: "success",
+      status: options.code??200,
       message: options.message ?? "Success",
       data: options.data ?? {},
       accessToken: options.accessToken ?? null,
@@ -20,7 +20,7 @@ class Response {
    */
   static error(options = {}) {
     return new AppError({
-        statusCode:400,
+        code:options.code?? 400,
         message:options.message ?? "Invalid data",
         data:options.data,
         accessToken:options.accessToken
@@ -33,7 +33,7 @@ class Response {
    */
   static unauthorize(options = {}) {
     return new AppError({
-      statusCode:401,
+      code:options.code?? 401,
       message:options.message ?? "Unauthorized",
       data:options.data,
       accessToken:options.accessToken
@@ -44,10 +44,10 @@ class Response {
    * The client don't have permission for this action
    * @returns object
    */
-  static forbidded(options = {}) {
+  static forbidden(options = {}) {
     return new AppError({
-      statusCode:403,
-      message:options.message ?? "Forbidded",
+      code:options.code?? 403,
+      message:options.message ?? "Forbidden",
       data:options.data,
       accessToken:options.accessToken
     });
@@ -57,9 +57,9 @@ class Response {
    * The client don't have permission for this action
    * @returns object
    */
-  static invalid(options = {}) {
+  static notFound(options = {}) {
     return new AppError({
-      statusCode:404,
+      code:options.code?? 404,
       message:options.message ?? "Invalid Route",
       data:options.data,
       accessToken:options.accessToken
@@ -72,7 +72,7 @@ class Response {
    */
   static throttle(options = {}) {
     return new AppError({
-      statusCode:429,
+      code:options.code?? 429,
       message:options.message ?? "Too many requests.",
       data:options.data,
       accessToken:options.accessToken
@@ -85,7 +85,7 @@ class Response {
    */
   static exception(options = {}) {
     return new AppError({
-      statusCode:500,
+      code:options.code?? 500,
       message:options.message ?? "Internal server error.",
     });
   }
@@ -96,20 +96,7 @@ class Response {
    */
   static validation(options = {}) {
     return new AppError({
-      statusCode:422,
-      message:options.message ?? "Unprocessed entity.",
-      data:options.data,
-      accessToken:options.accessToken
-    });
-  }
-
-  /**
-   * Custom error in payload
-   * @returns object
-   */
-  static custom(options = {}) {
-    return new AppError({
-      statusCode:400,
+      code:options.code?? 422,
       message:options.message ?? "Unprocessed entity.",
       data:options.data,
       accessToken:options.accessToken

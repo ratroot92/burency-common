@@ -3,38 +3,37 @@ const AppError = require('../exceptions/ApiError');
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
-  return new AppError({message,statusCode:400});
+  return new AppError({message,code:400});
 };
 
 const handleDuplicateFieldsDB = (err) => {
   const value = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
   const message = `Duplicate  field value: ${value}, Please use another value`;
-  return new AppError({message,statusCode:400});
+  return new AppError({message,code:400});
 };
 
 const handleValidationErrorDB = (err) => {
   const errors = Object.keys(err.errors).map((el) => el.message);
   const message = `Invalid input data. ${errors.join('. ')}`;
-  return new AppError({message,statusCode:422});
+  return new AppError({message,code:422});
 
 };
 
-const handleJWTsError = () => new AppError({message:"Invalid token, Please log in again",statusCode:401});
+const handleJWTsError = () => new AppError({message:"Invalid token, Please log in again",code:401});
 
-const handleJWTExpiredError = () =>new AppError({message:'Your token has expired, Please log in again',statusCode:401});
+const handleJWTExpiredError = () =>new AppError({message:'Your token has expired, Please log in again',code:401});
 
 const sendErrorDev = (err,req, res) => {
-  res.status(err.statusCode).json({
+  res.status(err.code).json({
     status: err.status,
     error: err,
     message: err.message,
-    stack: err.stack,
   }); 
 };
 
 const sendErrorProd = (err,req, res) => {
   if (err.isOperational) {
-    res.status(err.statusCode).json({
+    res.status(err.code).json({
       status: err.status,
       message: err.message,
     });
@@ -47,7 +46,7 @@ const sendErrorProd = (err,req, res) => {
 
 const errorHandler = (err, req, res, next) => {
 
-  err.statusCode = err.statusCode || 500;
+  err.code = err.code || 500;
   error.status = err.status || 'error';
 
   if (process.env.APP_ENV == 'local') 
