@@ -1,3 +1,5 @@
+const AppError = require("../exceptions/ApiError");
+
 class Response {
   /**
    * Request has been fulfilled successfully
@@ -5,11 +7,11 @@ class Response {
    */
   static success(options = {}) {
     return {
-      status: 200,
+      status: "success",
       message: options.message ?? "Success",
       data: options.data ?? {},
       accessToken: options.accessToken ?? null,
-    };
+    }; 
   }
 
   /**
@@ -17,12 +19,12 @@ class Response {
    * @returns object
    */
   static error(options = {}) {
-    return {
-      status: 400,
-      message: options.message ?? "Error",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+        statusCode:400,
+        message:options.message ?? "Invalid data",
+        data:options.data,
+        accessToken:options.accessToken
+      });
   }
 
   /**
@@ -30,12 +32,12 @@ class Response {
    * @returns object
    */
   static unauthorize(options = {}) {
-    return {
-      status: 401,
-      message: options.message ?? "Unauthorized",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:401,
+      message:options.message ?? "Unauthorized",
+      data:options.data,
+      accessToken:options.accessToken
+    });
   }
 
   /**
@@ -43,12 +45,12 @@ class Response {
    * @returns object
    */
   static forbidded(options = {}) {
-    return {
-      status: 403,
-      message: options.message ?? "Forbidded",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:403,
+      message:options.message ?? "Forbidded",
+      data:options.data,
+      accessToken:options.accessToken
+    });
   }
 
   /**
@@ -56,12 +58,12 @@ class Response {
    * @returns object
    */
   static invalid(options = {}) {
-    return {
-      status: 404,
-      message: options.message ?? "Invalid Route",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:404,
+      message:options.message ?? "Invalid Route",
+      data:options.data,
+      accessToken:options.accessToken
+    });
   }
 
   /**
@@ -69,12 +71,12 @@ class Response {
    * @returns object
    */
   static throttle(options = {}) {
-    return {
-      status: 429,
-      message: options.message ?? "Too many requests.",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:429,
+      message:options.message ?? "Too many requests.",
+      data:options.data,
+      accessToken:options.accessToken
+    });
   }
 
   /**
@@ -82,12 +84,10 @@ class Response {
    * @returns object
    */
   static exception(options = {}) {
-    return {
-      status: 500,
-      message: options.message ?? "Internal server error.",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:500,
+      message:options.message ?? "Internal server error.",
+    });
   }
 
   /**
@@ -95,12 +95,12 @@ class Response {
    * @returns object
    */
   static validation(options = {}) {
-    return {
-      status: 422,
-      message: options.message ?? "Unprocessed entity.",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:422,
+      message:options.message ?? "Unprocessed entity.",
+      data:options.data,
+      accessToken:options.accessToken
+    });
   }
 
   /**
@@ -108,13 +108,14 @@ class Response {
    * @returns object
    */
   static custom(options = {}) {
-    return {
-      status: options.stauts ?? 400,
-      message: options.message ?? "Unprocessed entity.",
-      data: options.data ?? {},
-      accessToken: options.accessToken ?? null,
-    };
+    return new AppError({
+      statusCode:400,
+      message:options.message ?? "Unprocessed entity.",
+      data:options.data,
+      accessToken:options.accessToken
+    });
   }
+
 }
 
 module.exports = Response;
