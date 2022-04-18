@@ -60,6 +60,20 @@ class Response
 	 * The client don't have permission for this action
 	 * @returns object
 	 */
+	static privilege(options = {}) 
+	{
+		return {
+			status: options.status ?? 412,
+			message: options.message ?? "Insufficient Privilege",
+			data: options.data,
+			accessToken: options.accessToken
+		};
+	}
+
+	/**
+	 * The client don't have permission for this action
+	 * @returns object
+	 */
 	static notFound(options = {}) 
 	{
 		return {
@@ -108,6 +122,31 @@ class Response
 			status: options.status ?? 422,
 			message: options.message ?? "Unprocessed entity.",
 			data: options.data,
+			accessToken: options.accessToken
+		};
+	}
+
+	/**
+	 * Validation error in payload
+	 * @returns object
+	 */
+	static customValidation(options = {}) 
+	{
+		return {
+			status: options.status ?? 422,
+			message: options.message ?? "Unprocessed entity.",
+			data: {
+				errors: [{
+					path: options?.map?.join('.') ?? "",
+					field: options?.map?.at(-1) ?? "",
+					message: options.message ?? "Invalid value",
+					map: options.map ?? [],
+					type: "custom",
+					_original: {
+						// TODO: Add if required
+					},
+				}]
+			},
 			accessToken: options.accessToken
 		};
 	}

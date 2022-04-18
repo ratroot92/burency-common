@@ -25,6 +25,9 @@ const auth = function (options = {})
         // if( verifiedToken.exp <= Date.now() )
         //     res.json( Response.unauthorize({ message: "Token has been expired."}) );
     
+        // 4. Permission Check
+        // Response.forbidden 403
+
         // Attach user with the request
         req.authUser = verifiedToken.data;
         
