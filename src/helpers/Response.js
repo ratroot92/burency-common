@@ -140,11 +140,10 @@ class Response
 					path: options?.map?.join('.') ?? "",
 					field: options?.map?.at(-1) ?? "",
 					message: options.message ?? "Invalid value",
-					map: options.map ?? [],
-					type: "custom",
-					_original: {
-						// TODO: Add if required
-					},
+					// map: options.map ?? [],
+					// type: "custom",
+					// _original: {
+					// },
 				}]
 			},
 			accessToken: options.accessToken

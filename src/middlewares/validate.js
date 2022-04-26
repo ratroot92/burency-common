@@ -5,7 +5,9 @@ const { Response } = require("../helpers");
 const validate = async function (req, res, next) 
 {
     var endpoint = req.originalUrl.replace(/^\/|\/$/g, '');
-    endpoint = endpoint.split("/");
+    endpoint = endpoint?.split("/");
+    if(!endpoint)
+        return next();
 
     if(endpoint[1])
         endpoint = req.method+":"+endpoint[0]+"/*";
@@ -27,9 +29,9 @@ const validate = async function (req, res, next)
                     path: detail.context.label,
                     field: detail.context.key,
                     message: detail.message,
-                    map: detail.path,
-                    type: detail.type,
-                    _original: error._original
+                    // map: detail.path,
+                    // type: detail.type,
+                    // _original: error._original
                 });
             });
             return res.status(422).json( Response.validation({ data: { errors } }) );
