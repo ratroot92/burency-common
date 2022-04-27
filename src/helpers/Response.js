@@ -10,6 +10,7 @@ class Response
 			status: options.status ?? 200,
 			message: options.message ?? "Success",
 			data: options.data ?? {},
+			paginatedData: options.paginatedData?? null,
 			accessToken: options.accessToken ?? null,
 		};
 	}
