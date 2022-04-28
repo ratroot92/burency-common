@@ -1,6 +1,7 @@
 const path = require("path");
 const rules = require(path.join(process.cwd(), "/src/app/validations"));
 const { Response } = require("../helpers");
+var ObjectId = require('mongoose').Types.ObjectId;
 
 const validate = async function (req, res, next) 
 {
@@ -9,8 +10,10 @@ const validate = async function (req, res, next)
     if(!endpoint)
         return next();
 
-    if(endpoint[1])
-        endpoint = req.method+":"+endpoint[0]+"/*";
+    if(endpoint[2])
+        endpoint = req.method+":"+endpoint[0]+"/"+endpoint[1]+( endpoint[2].length <=22 ? endpoint[2] : "*" );
+    else if(endpoint[1])
+        endpoint = req.method+":"+endpoint[0]+"/"+ ( endpoint[1].length <=22 ? endpoint[1] : "*" );
     else
         endpoint = req.method+":"+endpoint[0];
 
