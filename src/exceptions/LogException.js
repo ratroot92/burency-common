@@ -4,12 +4,11 @@ const { env } = require("../helpers");
 class LogException {
     static async log_exception(req, error) {
         const { rawHeaders, method, originalUrl, coRelationId } = req;
-        var ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
         var user = req.authUser?.user.email ? req.authUser?.user.email : req.authUser?.user.phone;
 
         const logData = {
-            coRelationId, level: "error", log_type: "REST_API", service: env("APP_NAME"), user, ipAddress,
-            ...{ request: { rawHeaders, method, originalUrl, ipAddress } }, processingTime: performance.now() - req?.startTime,
+            coRelationId, level: "error", log_type: "REST_API", service: env("APP_NAME"), user: { email: user, about_user: req.detect_user },
+            ...{ request: { rawHeaders, method, originalUrl } }, processingTime: performance.now() - req?.startTime,
             ...{
                 error: {
                     message: error.message || "Something went wrong",
