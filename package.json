@@ -19,6 +19,7 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.16.0",
+    "ua-parser-js": "^1.0.2",
     "uuid": "^8.3.2"
   }
 }
