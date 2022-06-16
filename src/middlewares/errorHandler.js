@@ -1,5 +1,6 @@
 const { Response } = require("../helpers");
 const { ApiError, LogException } = require('../exceptions');
+const DetectUser = require("../helpers/DetectUser");
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
@@ -23,7 +24,9 @@ const handleJWTsError = () => new ApiError({ message: "Invalid token, Please log
 
 const handleJWTExpiredError = () => new ApiError({ message: 'Your token has expired, Please log in again', status: 401 });
 
-const sendErrorDev = (err, req, res) => {
+const sendErrorDev = (err, req, res) => {  
+  var detect_user = new DetectUser(req);
+  req.detect_user = detect_user;
   LogException.log_exception(req, err);
   let error = { ...err };
   res.status(err.status).json({
@@ -34,6 +37,8 @@ const sendErrorDev = (err, req, res) => {
 };
 
 const sendErrorProd = (err, req, res) => {
+  var detect_user = new DetectUser(req);
+  req.detect_user = detect_user;
   LogException.log_exception(req, err);
   if (err.isOperational) {
     res.status(err.status).json({
