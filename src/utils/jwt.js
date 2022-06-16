@@ -16,17 +16,24 @@ class Jwt
 			iat: Math.floor(Date.now() / 1000) - 30,
 			exp: Math.floor(Date.now() / 1000) + 60 * 60,
 			validFor: options.validFor ?? false,
+			device_fingerprint: options.device_fingerprint
 		},
 		env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634")
 		);
 
 		return token;
 	}
-	static verifyToken(token) 
+	static verifyToken(token, detectUser) 
 	{
 		try 
 		{
-			return jwt.verify(token, env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634"));
+			const decodedToken = jwt.verify(token, env("TOKEN_SECRET", "x0t0wefw33@2314R23$@4$%!#$634"));
+
+			// Token is only valid for the creating device
+			if(decodedToken.device_fingerprint !== detectUser.device_fingerprint)
+				return false;
+			else
+				return decodedToken;
 		}
 		catch (error)
 		{

@@ -7,9 +7,10 @@ class DetectUser
         const uaParser = UAParser(request.headers["user-agent"]);
 
         this.ua = uaParser.ua;
-        this.browser = uaParser.browser;
+        const suspicious = this.ua?.split("/");
+        this.browser = uaParser.browser?.name ? uaParser.browser : { name: suspicious[0], version: suspicious[1] };
         this.engine = uaParser.engine;
-        this.os = uaParser.os;
+        this.os = uaParser.os || uaParser.ua;
         this.device = uaParser.device;
         this.cpu = uaParser.cpu;
 
@@ -24,8 +25,7 @@ class DetectUser
             this.os?.name+"v."+this.os?.version +"-"+
             this.engine?.name+"v."+this.engine?.version;
 
-        
-        this.device_fingerprint = 
+        this.device_fingerprint =
             this.browser?.name+"v."+this.browser?.version+"-"+
             this.os?.name+"v."+this.os?.version +"-"+
             this.engine?.name+"v."+this.engine?.version;

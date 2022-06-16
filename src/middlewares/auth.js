@@ -1,11 +1,12 @@
 const JWT = require("../utils/jwt");
-const { Response } = require("../helpers");
+const { Response, DetectUser } = require("../helpers");
 
 const auth = function (options = {}) 
 {
     return async (req, res, next) => 
     {
-        const verifiedToken = JWT.verifyToken(req.headers.accesstoken);
+        const detectUser = new DetectUser(req);
+        const verifiedToken = JWT.verifyToken(req.headers.accesstoken, detectUser);
     
         // 1. Check if token is valid
         if(!verifiedToken)
@@ -37,7 +38,7 @@ const auth = function (options = {})
             data = JSON.parse(data);
             if(data?.accessToken === null && req.authUser?.authenticated === true)
             {
-                const accessToken =  JWT.getToken({ ...req.authUser });
+                const accessToken =  JWT.getToken({ ...req.authUser }, { device_fingerprint: detectUser.device_fingerprint });
                 data.accessToken = accessToken;
             }
             res.send = oldSend // set function back to avoid the 'double-send'
