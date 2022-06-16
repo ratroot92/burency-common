@@ -1,6 +1,7 @@
 const { env } = require("../helpers");
 const { Stream } = require("../stream");
 const { v4: uuidv4 } = require('uuid');
+const DetectUser = require("../helpers/DetectUser");
 
 const resDotSendInterceptor = (res, send) => (content) => {
     res.contentBody = content;
@@ -11,6 +12,7 @@ const resDotSendInterceptor = (res, send) => (content) => {
 const logger = function (req, res, next) {
     // Store this Log in the database
     console.log("Route invoked: " + req.originalUrl)
+    var detect_user = new DetectUser(req);
 
     req.startTime = performance.now();
     req.coRelationId = uuidv4();
@@ -27,9 +29,9 @@ const logger = function (req, res, next) {
             var log_type = "REST_API";
             var service = env("APP_NAME");
             const logData = {
-                ...{ request: { rawHeaders, method, originalUrl, ipAddress, startTime, user } },
+                ...{ request: { rawHeaders, method, originalUrl, ipAddress, startTime } },
                 ...{ response: { statusCode, statusMessage, contentBody } },
-                processingTime, level, log_type, service, coRelationId
+                processingTime, level, log_type, service, coRelationId, user: { email: user, about_user: detect_user }
             }
             //send this info to kafka
             const streamServer = new Stream({
