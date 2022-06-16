@@ -23,6 +23,12 @@ class DetectUser
             this.browser?.name+"v."+this.browser?.version+"-"+
             this.os?.name+"v."+this.os?.version +"-"+
             this.engine?.name+"v."+this.engine?.version;
+
+        
+        this.device_fingerprint = 
+            this.browser?.name+"v."+this.browser?.version+"-"+
+            this.os?.name+"v."+this.os?.version +"-"+
+            this.engine?.name+"v."+this.engine?.version;
     }
 
     // TODO: 
