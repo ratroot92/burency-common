@@ -16,7 +16,7 @@ const logger = function (req, res, next) {
 
     req.startTime = performance.now();
     req.coRelationId = uuidv4();
-    res.send = resDotSendInterceptor(res, res.send);   //Intercept response send method
+    res.send = resDotSendInterceptor(res, res.send);   // Intercept response send method
 
     res.on('finish', async () => {
         const { statusCode, statusMessage, contentBody } = res;
