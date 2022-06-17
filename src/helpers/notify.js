@@ -1,4 +1,4 @@
-const { env } = require("../helpers");
+const { env } = require("./helpers");
 const { Stream } = require("../stream");
 
 const notify = async (notificationData) => 
