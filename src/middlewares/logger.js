@@ -23,7 +23,8 @@ const logger = function (req, res, next) {
         if (contentBody?.status >= 200 && contentBody?.status < 400) {
             const { rawHeaders, method, originalUrl, startTime, coRelationId } = req;
             var ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
-            var user = req.authUser?.user.email ? req.authUser?.user.email : req.authUser?.user.phone;
+            var userEmail = req.authUser?.user.email ? req.authUser?.user.email : req.authUser?.user.phone;
+            var user_id = req.authUser?.user._id;
             var processingTime = performance.now() - req.startTime;
             var level = "info";
             var log_type = "REST_API";
@@ -31,7 +32,7 @@ const logger = function (req, res, next) {
             const logData = {
                 ...{ request: { rawHeaders, method, originalUrl, ipAddress, startTime } },
                 ...{ response: { statusCode, statusMessage, contentBody } },
-                processingTime, level, log_type, service, coRelationId, user: { email: user, about_user: detect_user }
+                processingTime, level, log_type, service, coRelationId, user: { id: user_id, email: userEmail, about_user: detect_user }
             }
             //send this info to kafka
             const streamServer = new Stream({
