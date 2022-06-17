@@ -1,5 +1,6 @@
 const { Response } = require("../helpers");
 const { ApiError, LogException } = require('../exceptions');
+const DetectUser = require("../helpers/DetectUser");
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
@@ -34,6 +35,8 @@ const sendErrorDev = (err, req, res) => {
 };
 
 const sendErrorProd = (err, req, res) => {
+  var detect_user = new DetectUser(req);
+  req.detect_user = detect_user;
   LogException.log_exception(req, err);
   if (err.isOperational) {
     res.status(err.status).json({
