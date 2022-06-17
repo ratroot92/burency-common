@@ -1,13 +1,17 @@
 const { Stream } = require("../stream");
 const { env } = require("../helpers");
+const DetectUser = require("../helpers/DetectUser");
+
 
 class LogException {
     static async log_exception(req, error) {
+        var detect_user = new DetectUser(req);
         const { rawHeaders, method, originalUrl, coRelationId } = req;
-        var user = req.authUser?.user.email ? req.authUser?.user.email : req.authUser?.user.phone;
+        var userEmail = req.authUser?.user.email ? req.authUser?.user.email : req.authUser?.user.phone;
+        var user_id = req.authUser?.user._id;
 
         const logData = {
-            coRelationId, level: "error", log_type: "REST_API", service: env("APP_NAME"), user: { email: user, about_user: req.detect_user },
+            coRelationId, level: "error", log_type: "REST_API", service: env("APP_NAME"), user: { id: user_id, email: userEmail, about_user: detect_user },
             ...{ request: { rawHeaders, method, originalUrl } }, processingTime: performance.now() - req?.startTime,
             ...{
                 error: {
