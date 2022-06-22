@@ -5,7 +5,7 @@ const DetectUser = require("../helpers/DetectUser");
 
 class LogException {
     static async log_exception(req, error) {
-        var detect_user = new DetectUser(req);
+        var detect_user = new DetectUser({req, headers: req.headers});
         const { rawHeaders, method, originalUrl, coRelationId } = req;
         var userEmail = req.authUser?.user.email ? req.authUser?.user.email : req.authUser?.user.phone;
         var user_id = req.authUser?.user._id;
