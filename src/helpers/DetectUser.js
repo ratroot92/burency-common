@@ -3,30 +3,53 @@ const is = require('is_js');
 
 class DetectUser
 {
-    constructor(request)
+    constructor(options = { headers, req })
     {
-        const uaParser = UAParser(request.headers["user-agent"]);
+        const uaParser = UAParser(options.headers["user-agent"]);
+        const suspicious = uaParser.ua?.split("/");
+        uaParser.browser?.name ? uaParser.browser : { name: suspicious[0], version: suspicious[1] };
+        
+        this.browser = {
+            name: options.headers['info-browser'] || uaParser.browser?.name,
+            version: options.headers['info-browser-version'] || uaParser.browser?.version
+        };
+        this.engine = {
+            name: options.headers['info-engine'] || uaParser.engine?.name,
+            version: options.headers['info-engine-version'] || uaParser.engine?.version
+        };
+        this.os = {
+            name: options.headers['info-os'] || uaParser.os?.name,
+            version: options.headers['info-os-version'] || uaParser.os?.version
+        };
+        this.device = {
+            name: options.headers['info-device'] || uaParser.device?.name,
+            version: options.headers['info-device-model'] || uaParser.device?.model,
+            token: options.headers['info-device-token'] || null
+        };
+        this.CPU = options.headers['info-cpu'] || uaParser.cpu;
 
-        this.ua = uaParser.ua;
-        const suspicious = this.ua?.split("/");
-        this.browser = uaParser.browser?.name ? uaParser.browser : { name: suspicious[0], version: suspicious[1] };
-        this.engine = uaParser.engine;
-        this.os = uaParser.os || uaParser.ua;
-        this.device = uaParser.device;
-        this.cpu = uaParser.cpu;
+        this.ip = this.getClientIp(options.req);
 
-        this.ip = this.getClientIp(request);
+        this.fingerprint = this.ip+"-";
+        if(this.browser.name)
+            this.fingerprint += this.browser.name+"v."+this.browser?.version+"-";
+        if(this.device.name)
+            this.fingerprint += this.device.name+"v."+this.device?.model+"-";
+        if(this.os.name)
+            this.fingerprint += this.os.name+"v."+this.os?.version+"-";
+        if(this.engine.name)
+            this.fingerprint += this.engine.name+"v."+this.engine?.version;
 
-        this.fingerprint = 
-            this.ip +"-"+ 
-            this.browser?.name+"v."+this.browser?.version+"-"+
-            this.os?.name+"v."+this.os?.version +"-"+
-            this.engine?.name+"v."+this.engine?.version;
 
-        this.device_fingerprint =
-            this.browser?.name+"v."+this.browser?.version+"-"+
-            this.os?.name+"v."+this.os?.version +"-"+
-            this.engine?.name+"v."+this.engine?.version;
+        this.device_fingerprint = "";
+        if(this.browser.name)
+            this.device_fingerprint += this.browser.name+"v."+this.browser?.version+"-";
+        if(this.device.name)
+            this.device_fingerprint += this.device.name+"v."+this.device?.model+"-";
+        if(this.os.name)
+            this.device_fingerprint += this.os.name+"v."+this.os?.version+"-";
+        if(this.engine.name)
+            this.device_fingerprint += this.engine.name+"v."+this.engine?.version;
     }
 
     /**
