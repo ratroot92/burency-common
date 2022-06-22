@@ -5,7 +5,7 @@ const auth = function (options = {})
 {
     return async (req, res, next) => 
     {
-        const detectUser = new DetectUser(req);
+        const detectUser = new DetectUser({req, headers: req.headers});
         const verifiedToken = JWT.verifyToken(req.headers.accesstoken, detectUser);
     
         // 1. Check if token is valid
