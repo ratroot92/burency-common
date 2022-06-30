@@ -22,6 +22,7 @@ class DetectUser
             version: options.headers['info-os-version'] || uaParser.os?.version
         };
         this.device = {
+            id: options.headers['info-device-id'] || uaParser.device?.id,
             name: options.headers['info-device'] || uaParser.device?.name,
             version: options.headers['info-device-model'] || uaParser.device?.model,
             token: options.headers['info-device-token'] || null

@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "script": "node src/index.js",
-    "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm publish"
+    "pub": "npm version patch && npm publish"
   },
   "keywords": [],
   "author": "Malik Atique",
