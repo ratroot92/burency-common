@@ -7,7 +7,7 @@ const notify = require("./notify");
 module.exports = {
     notify,
     Response,
-    Encryption,
+    ...Encryption,
     DetectUser,
     ...helpers,
 }
