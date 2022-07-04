@@ -3,18 +3,18 @@ const crypto = require('crypto');
 const { env } = require("../helpers/helpers");
 const algorithm = 'aes-256-ctr';
 
-const hash = async () =>
+const hash = async (data = {}) =>
 {
 	const salt = await bcrypt.genSalt(10);
 	return await bcrypt.hash(data, salt);
 }
 
-const hashCompare = async () =>
+const hashCompare = async (data = {}, hashedData) =>
 {
 	return await bcrypt.compare(data, hashedData);
 }
 
-const checkHash = async () =>
+const checkHash = async (data = {}, hashedData) =>
 {
 	return await bcrypt.compare(data, hashedData);
 }
