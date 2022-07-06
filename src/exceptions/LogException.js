@@ -6,7 +6,7 @@ const DetectUser = require("../helpers/DetectUser");
 class LogException {
     static async log_exception(req, error) {
         var user = null;
-        if (req.authUser !== undefined) {
+        if (req.authUser?.user !== undefined) {
             var detect_user = new DetectUser({ req, headers: req.headers });
             user = {
                 id: req.authUser?.user._id,
