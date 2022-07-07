@@ -1,6 +1,7 @@
 const { Stream } = require("../stream");
 const { env } = require("../helpers");
 const DetectUser = require("../helpers/DetectUser");
+const { performance } = require('perf_hooks');
 
 
 class LogException {
