@@ -13,6 +13,7 @@ const resDotSendInterceptor = (res, send) => (content) => {
 const logger = function (req, res, next) {
     // Store this Log in the database
     console.log("Route invoked: " + req.originalUrl);
+    req.args = { ...req.body, ...req.query, ...req.params, headers: req.headers };
 
     req.startTime = performance.now();
     req.coRelationId = uuidv4();

@@ -31,6 +31,7 @@ const auth = function (options = {})
 
         // Attach user with the request
         req.authUser = verifiedToken.data;
+        req.args = { ...req.args, authUser: req.authUser };
         
         var oldSend = res.send;
         res.send = function(data)

@@ -28,7 +28,8 @@ const sendErrorDev = (err, req, res) => {
   res.status(err.status).json({
     status: err.status,
     message: err.message,
-    error: err.stack?.split("\n")
+    error: err.stack?.split("\n"),
+    data: err.data
   });
 };
 
@@ -38,6 +39,7 @@ const sendErrorProd = (err, req, res) => {
     res.status(err.status).json({
       status: err.status,
       message: err.message,
+      data: err.data
     });
   } else {
     console.log('Something went wrong');
