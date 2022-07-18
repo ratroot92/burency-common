@@ -139,7 +139,7 @@ class Response
 			data: {
 				errors: [{
 					path: options?.map?.join('.') ?? "",
-					field: options?.map?.at(-1) ?? "",
+					field: options?.map[options?.map?.length - 1] ?? "",
 					message: options.message ?? "Invalid value",
 					// map: options.map ?? [],
 					// type: "custom",
