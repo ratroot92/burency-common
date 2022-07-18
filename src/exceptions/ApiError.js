@@ -1,4 +1,4 @@
-class AppError extends Error 
+class ApiError extends Error 
 {
     constructor(data) 
 	{  
@@ -6,7 +6,17 @@ class AppError extends Error
 
 		this.status = data.status;
 		this.message = data.message ?? {};
-		this.data = data.data ?? {};
+		this.data = {
+			errors: [{
+				path: data?.map?.join('.') ?? "",
+				field: data?.map[data?.map?.length - 1] ?? "",
+				message: data.message ?? "Invalid value",
+				// map: options.map ?? [],
+				// type: "custom",
+				// _original: {
+				// },
+			}]
+		};
 		this.accessToken = data.accessToken ?? null;
 		this.isOperational = data.isOperational ?? true;
 
@@ -14,4 +24,4 @@ class AppError extends Error
 	}
 }
 
-module.exports = AppError;
+module.exports = ApiError;

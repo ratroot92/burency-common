@@ -79,8 +79,16 @@ const routeContainer = (originRouterMethod) =>
     };
 }
 
+const callRepository = async (repository, method, args) => 
+{
+    const repositoryPath = path.resolve(process.cwd(), "src/app/repositories/", repository);
+    const Repository = require(repositoryPath);
+    return await Repository[method](args);
+}
+
 module.exports = {
     getPath,
     env,
-    routerWrapper
+    routerWrapper,
+    callRepository
 }
