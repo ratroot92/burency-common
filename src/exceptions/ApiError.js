@@ -18,6 +18,7 @@ class ApiError extends Error
 			}]
 		};
 		this.accessToken = data.accessToken ?? null;
+		this.isValid = data.isValid ?? null;
 		this.isOperational = data.isOperational ?? true;
 
 		Error.captureStackTrace(this, this.constructor);
