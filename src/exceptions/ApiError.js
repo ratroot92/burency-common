@@ -1,22 +1,19 @@
-class ApiError extends Error 
-{
-    constructor(data) 
-	{  
+class ApiError extends Error {
+	constructor(data) {
 		super(data.message);
 
 		this.status = data.status;
 		this.message = data.message ?? {};
-		this.data = {
-			errors: [{
-				path: data?.map?.join('.') ?? "",
-				field: data?.map[data?.map?.length - 1] ?? "",
-				message: data.message ?? "Invalid value",
-				// map: options.map ?? [],
-				// type: "custom",
-				// _original: {
-				// },
-			}]
-		};
+		if (data?.map)
+			this.data = {
+				errors: [
+					{
+						path: data?.map?.join('.') ?? '',
+						field: data?.map[data?.map?.length - 1] ?? '',
+						message: data.message ?? 'Invalid value',
+					},
+				],
+			};
 		this.accessToken = data.accessToken ?? null;
 		this.isValid = data.isValid ?? null;
 		this.isOperational = data.isOperational ?? true;
