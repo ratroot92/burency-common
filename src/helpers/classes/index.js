@@ -1,5 +1,5 @@
-const Base = require('./classes/BaseRepository');
-const APIFeature = require('./classes/APIFeature');
+const Base = require('./BaseRepository');
+const APIFeature = require('./APIFeature');
 
 module.exports = {
 	Base,
