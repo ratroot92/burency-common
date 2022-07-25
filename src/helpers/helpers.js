@@ -101,10 +101,17 @@ const callRepository = async (repository, method, args) => {
 	return await Repository[method](args);
 };
 
+const send = (res, data) =>
+	res
+		.set({ 'Content-Type': 'application/json' })
+		.status(200)
+		.json({ ...data, data: data.data ?? {}, status: data.status ?? 200, message: data.message ?? 'Success' });
+
 module.exports = {
 	getPath,
 	settings,
 	env,
 	routerWrapper,
 	callRepository,
+	send,
 };
