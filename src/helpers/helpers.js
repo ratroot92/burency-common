@@ -1,5 +1,6 @@
 const path = require('path');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
 const getPath = (fullUrl) => {
     return fullUrl.replace(/^\/|\/$/g, '');
@@ -102,6 +103,15 @@ const callRepository = async (repository, method, args) => {
     return await Repository[method](args);
 };
 
+const getAuthUser = (accessToken) => {
+    try {
+        const decodedToken = jwt.verify(accessToken, env('TOKEN_SECRET', 'x0t0wefw33@2314R23$@4$%!#$634'));
+        return decodedToken?.data?.user;
+    } catch (error) {
+        return false;
+    }
+};
+
 const send = (res, data) =>
     res
         .set({ 'Content-Type': 'application/json' })
@@ -138,4 +148,5 @@ module.exports = {
     callRepository,
     send,
     getFileDetails,
+    getAuthUser,
 };
