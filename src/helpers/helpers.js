@@ -107,6 +107,19 @@ const send = (res, data) =>
 		.status(200)
 		.json({ ...data, data: data.data ?? {}, status: data.status ?? 200, message: data.message ?? 'Success' });
 
+const updateObjectModelEntities = async (models = [], value) => {
+	if (models && models.length) {
+		for (const model of models) {
+			const modelPath = path.resolve(process.cwd(), 'src/app/models/', model.model);
+			const Model = require(modelPath);
+			const filterById = {};
+			filterById[model.key + '._id'] = value._id;
+			await Model.updateMany({ ...filterById }, { $set: { [model.key]: value } });
+		}
+	}
+	return true;
+};
+
 module.exports = {
 	getPath,
 	settings,
@@ -114,4 +127,5 @@ module.exports = {
 	routerWrapper,
 	callRepository,
 	send,
+	updateObjectModelEntities,
 };
