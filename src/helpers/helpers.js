@@ -140,6 +140,19 @@ const getFileDetails = async (uploadId, token) => {
     }
 };
 
+const updateObjectModelEntities = async (models = [], value) => {
+    if (models && models.length) {
+        for (const model of models) {
+            const modelPath = path.resolve(process.cwd(), 'src/app/models/', model.model);
+            const Model = require(modelPath);
+            const filterById = {};
+            filterById[model.key + '._id'] = value._id;
+            await Model.updateMany({ ...filterById }, { $set: { [model.key]: value } });
+        }
+    }
+    return true;
+};
+
 module.exports = {
     getPath,
     settings,
@@ -149,4 +162,5 @@ module.exports = {
     send,
     getFileDetails,
     getAuthUser,
+    updateObjectModelEntities,
 };
