@@ -59,12 +59,16 @@ const routeContainer = (originRouterMethod) => {
     return function () {
         const originMiddlewares = [...arguments];
         const wrappedMiddlewares = originMiddlewares.map((fn) => {
-            if (typeof fn !== `function`) {
-                return fn;
-            }
-
+            if (typeof fn !== `function`) return fn;
             return async function (req, res, next) {
                 try {
+                    req.args = {
+                        ...req.args,
+                        body: req.body,
+                        headers: req.headers,
+                        params: req.params,
+                        query: req.query,
+                    };
                     await fn.apply(null, arguments);
                 } catch (err) {
                     next(err);
