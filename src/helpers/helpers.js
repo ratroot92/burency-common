@@ -157,6 +157,22 @@ const updateObjectModelEntities = async (models = [], value) => {
     return true;
 };
 
+const appSetting = async (field, defaultValue) => {
+    const settingPath = path.resolve(process.cwd(), 'src/app/models/Setting');
+    const Setting = require(settingPath);
+    const setting = await Setting.findOne({ kind: "app-settings" });
+    if(!setting || !setting.configurations || !setting.configurations[field])   return defaultValue;
+    else    return setting?.configurations[field];
+}
+
+const userSetting = async (field, userId, defaultValue) => {
+    const settingPath = path.resolve(process.cwd(), 'src/app/models/Setting');
+    const Setting = require(settingPath);
+    const setting = await Setting.findOne({ user: userId });
+    if(!setting || !setting.configurations || !setting.configurations[field])   return defaultValue;
+    else    return setting?.configurations[field];
+}
+
 module.exports = {
     getPath,
     settings,
@@ -167,4 +183,6 @@ module.exports = {
     getFileDetails,
     getAuthUser,
     updateObjectModelEntities,
+    appSetting,
+    userSetting
 };
