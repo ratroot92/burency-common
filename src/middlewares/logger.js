@@ -49,7 +49,7 @@ const logger = function (req, res, next) {
             //send this info to kafka
             const streamServer = new Stream({
                 clientId: env('KAFKA_CLIENT_ID'),
-                brokers: [env('KAFKA_BROKERS')],
+                brokers: env('KAFKA_BROKERS').split(','),
             });
             await streamServer.produce(logData, {
                 topic: 'LOG_INFO.REST_API',
