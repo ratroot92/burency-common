@@ -21,7 +21,7 @@ const logger = function (req, res, next) {
     res.on('finish', async () => {
         const { statusCode, statusMessage, contentBody } = res;
         if (contentBody?.status >= 200 && contentBody?.status < 400) {
-            const { rawHeaders, method, originalUrl, startTime, coRelationId } = req;
+            const { rawHeaders, method, originalUrl, startTime, coRelationId, body, params, query } = req;
             var user = null;
             if (req.authUser?.user !== undefined) {
                 var detect_user = new DetectUser({ req, headers: req.headers });
@@ -37,7 +37,7 @@ const logger = function (req, res, next) {
             var log_type = 'REST_API';
             var service = env('APP_NAME');
             const logData = {
-                ...{ request: { rawHeaders, method, originalUrl, ipAddress, startTime } },
+                ...{ request: { rawHeaders, method, originalUrl, ipAddress, startTime, body, params, query } },
                 ...{ response: { statusCode, statusMessage, contentBody } },
                 processingTime,
                 level,
