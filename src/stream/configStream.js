@@ -22,11 +22,6 @@ class ConfigStream {
                 retries: 8,
             },
         });
-        console.log('======================================');
-        console.log('Connection with Kafka Initialized ....!');
-        console.log('CLIENT-ID ', this.clientId);
-        console.log('BROKERS  ', this.brokers);
-        console.log('======================================');
         this.producer = this.kafka.producer();
     }
     async registerServices(options = {}) {
