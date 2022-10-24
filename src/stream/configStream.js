@@ -1,6 +1,8 @@
 const { Kafka } = require('kafkajs');
 const path = require('path');
 const fs = require('fs');
+const util = require('util');
+const readFileAsync = util.promisify(fs.readFile);
 class ConfigStream {
     kafka;
     clientId;
@@ -12,7 +14,15 @@ class ConfigStream {
         this.brokers = process.env.KAFKA_BROKERS.split(',');
         this.connect();
     }
+    logger(data) {
+        if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'local') {
+            console.log('-------------------------------');
+            console.log(data);
+            console.log('-------------------------------');
+        }
+    }
     connect() {
+        this.logger('ConfigStream connect');
         this.kafka = new Kafka({
             clientId: this.clientId,
             brokers: this.brokers,
@@ -25,7 +35,11 @@ class ConfigStream {
         this.producer = this.kafka.producer();
     }
     async registerServices(options = {}) {
-        this.consumer = this.kafka.consumer({ groupId: options.gorupId + Math.random() });
+        this.logger('ConfigStream registerServices');
+        if (!options.services) {
+            options.services = JSON.parse(await readFileAsync(process.cwd() + '/src/config/services.json', 'utf-8'));
+        }
+        this.consumer = this.kafka.consumer({ groupId: this.clientId + Math.random() });
         await this.consumer.connect();
         for (const [key, service] of Object.entries(options.services)) {
             for (const [key2, operations] of Object.entries(service.operations)) {
@@ -36,7 +50,6 @@ class ConfigStream {
         await this.consumer.run({
             eachMessage: async ({ topic, partition, message }) => {
                 try {
-                    console.log('Event received...', topic);
                     const key = message.key?.toString();
                     const messageReceived = message.value?.toString();
                     var payload = JSON.parse(messageReceived);
@@ -54,9 +67,7 @@ class ConfigStream {
                         topic: topic[0] + '.' + topic[1],
                         key: key,
                     });
-                } catch (error) {
-                    console.log('Failed to handle event for ', topic, error);
-                }
+                } catch (error) {}
             },
         });
     }
